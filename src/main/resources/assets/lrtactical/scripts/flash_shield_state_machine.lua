@@ -26,7 +26,7 @@ local BLENDING_TRACK_LINE = increment(track_line_top)
 local MOVEMENT_TRACK = increment(blending_track_top)
 
 -- 播放丢枪动画的方法
-local function runPutAwayAnimation(context)
+local function run_put_away_animation(context)
     local put_away_time = context:getPutAwayTime()
     -- 此处获取的轨道是位于主轨道行上的主轨道
     local track = context:getTrack(STATIC_TRACK_LINE, MAIN_TRACK)
@@ -83,7 +83,7 @@ end
 function main_track_states.idle.transition(this, context, input)
     --print("idle transition - " .. input)
     if (input == INPUT_PUT_AWAY) then
-        runPutAwayAnimation(context)
+        run_put_away_animation(context)
         -- 丢枪后转到最终态
         return this.main_track_states.final
     elseif (input == INPUT_INSPECT) then
@@ -114,7 +114,7 @@ end
 function main_track_states.using.transition(this, context, input)
     --print("using transition - " .. input)
     if (input == INPUT_PUT_AWAY) then
-        runPutAwayAnimation(context)
+        run_put_away_animation(context)
         -- 丢枪后转到最终态
         return this.main_track_states.final
     elseif (input == "end_use") then

@@ -40,7 +40,6 @@ public class JumpSwayUtil {
                 }
             } else {
                 if (lastOnGround) {
-                    // 0.42 是玩家自然起跳的速度
                     jumpingSwayProgress = velocityY / 0.42f;
                     if (jumpingSwayProgress > 1) {
                         jumpingSwayProgress = 1;
@@ -58,7 +57,6 @@ public class JumpSwayUtil {
         float ySway = JUMPING_DYNAMICS.update(JUMPING_Y_SWAY * jumpingSwayProgress);
         BedrockPart rootNode = model.getRootNode();
         if (rootNode != null) {
-            // 基岩版模型 y 轴上下颠倒，sway 值取相反数
             rootNode.offsetY += -ySway / 16;
         }
     }

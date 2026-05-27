@@ -27,7 +27,6 @@ public class EquipmentMod {
         ModCapabilities.ATTACHMENT_TYPES.register(modEventBus);
         ModCustomTypes.THROWABLE_TYPES.register(modEventBus);
         ModCustomTypes.MELEE_WEAPON_TYPES.register(modEventBus);
-        // ModEnchantment.ENCHANTMENTS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.init());
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.init());

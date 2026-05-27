@@ -3,12 +3,15 @@ package me.xjqsh.lrtactical.init;
 
 import me.xjqsh.lrtactical.EquipmentMod;
 import me.xjqsh.lrtactical.api.LrTacticalAPI;
+import me.xjqsh.lrtactical.api.item.IConsumable;
 import me.xjqsh.lrtactical.api.item.IMeleeWeapon;
 import me.xjqsh.lrtactical.api.item.IThrowable;
+import me.xjqsh.lrtactical.item.ConsumableItem;
 import me.xjqsh.lrtactical.item.DetonatorItem;
 import me.xjqsh.lrtactical.item.FlashShieldItem;
 import me.xjqsh.lrtactical.item.MeleeItem;
 import me.xjqsh.lrtactical.item.ThrowableItem;
+import me.xjqsh.lrtactical.item.index.ConsumableIndex;
 import me.xjqsh.lrtactical.item.index.MeleeWeaponIndex;
 import me.xjqsh.lrtactical.item.index.ThrowableIndex;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,11 +44,21 @@ public class ModItems {
                     .build()
     );
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CONSUMABLE_TAB = TABS.register("consumable",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("item_group.lrtactical.consumable"))
+                    .icon(ModItems::getConsumableIcon)
+                    .displayItems(ModItems::fillConsumables)
+                    .withTabsBefore(MELEE_TAB.getId())
+                    .build()
+    );
+
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, EquipmentMod.MOD_ID);
     public static DeferredHolder<Item, ThrowableItem> THROWABLE = ITEMS.register("throwable", ThrowableItem::new);
     public static DeferredHolder<Item, MeleeItem> MELEE = ITEMS.register("melee", MeleeItem::new);
     public static DeferredHolder<Item, FlashShieldItem> FLASH_SHIELD = ITEMS.register("flash_shield", FlashShieldItem::new);
     public static DeferredHolder<Item, DetonatorItem> DETONATOR = ITEMS.register("detonator", DetonatorItem::new);
+    public static DeferredHolder<Item, ConsumableItem> CONSUMABLE = ITEMS.register("consumable", ConsumableItem::new);
 
     public static ItemStack getThrowableIcon() {
         ItemStack stack = new ItemStack(THROWABLE.get());
@@ -65,6 +78,15 @@ public class ModItems {
         return LrTacticalAPI.getMeleeIndex(stack).map(MeleeWeaponIndex::createItemStack).orElse(stack);
     }
 
+    public static ItemStack getConsumableIcon() {
+        ItemStack stack = new ItemStack(CONSUMABLE.get());
+        IConsumable iConsumable = IConsumable.of(stack);
+        if (iConsumable != null) {
+            iConsumable.setId(stack, ResourceLocation.fromNamespaceAndPath(EquipmentMod.MOD_ID, "blood_pack"));
+        }
+        return LrTacticalAPI.getConsumableIndex(stack).map(ConsumableIndex::createItemStack).orElse(stack);
+    }
+
 
     public static void fillThrowables(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output pOutput) {
         for (ThrowableIndex<?, ?> index : LrTacticalAPI.getThrowableIndexes()) {
@@ -80,5 +102,12 @@ public class ModItems {
             pOutput.accept(stack);
         }
         pOutput.accept(new ItemStack(FLASH_SHIELD.get()));
+    }
+
+    public static void fillConsumables(CreativeModeTab.ItemDisplayParameters pParameters, CreativeModeTab.Output pOutput) {
+        for (ConsumableIndex index : LrTacticalAPI.getConsumableIndexes()) {
+            ItemStack stack = index.createItemStack();
+            pOutput.accept(stack);
+        }
     }
 }

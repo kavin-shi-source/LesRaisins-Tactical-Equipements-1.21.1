@@ -5,7 +5,7 @@ parchment = "2024.11.17"
 moddev = "2.0.74"
 
 # Dependencies
-tacz = "1.0.4"
+tacz = "1.1.7-r2"
 cloth-config = "15.0.140"
 player-animation-lib = "2.0.1+1.21.1"
 jei = "19.21.0.247"

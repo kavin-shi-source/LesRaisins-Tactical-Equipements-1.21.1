@@ -173,7 +173,7 @@ public interface IMeleeWeapon extends ICustomItem {
             base = tryModifyDamageByEnchantments(serverLevel, stack, target, attacker.damageSources().playerAttack(attacker), base);
         }
 
-        int j = EnchantmentHelper.getEnchantmentLevel(attacker.level().registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FIRE_ASPECT), attacker);
+        int j = EnchantmentHelper.getEnchantmentLevel(attacker.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FIRE_ASPECT), attacker);
         if (target instanceof LivingEntity living) {
             if (j > 0) {
                 living.igniteForSeconds(j * 4);

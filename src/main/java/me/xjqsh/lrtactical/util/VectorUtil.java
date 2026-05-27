@@ -1,5 +1,6 @@
 package me.xjqsh.lrtactical.util;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -37,7 +38,7 @@ public class VectorUtil {
      * 计算两个向量之间的夹角
      */
     public static double angleBetween(Vec3 v1, Vec3 v2) {
-        return Math.toDegrees(Math.acos(v1.normalize().dot(v2.normalize())));
+        return Math.toDegrees(Math.acos(Mth.clamp(v1.normalize().dot(v2.normalize()), -1.0, 1.0)));
     }
 
     public static boolean isInAngle(Vec3 origin, Vec3 view, Entity target, double maxAngle, double maxDistance) {

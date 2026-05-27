@@ -3,8 +3,10 @@ package me.xjqsh.lrtactical.client.resource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.xjqsh.lrtactical.EquipmentMod;
+import me.xjqsh.lrtactical.client.resource.display.ConsumableDisplayInstance;
 import me.xjqsh.lrtactical.client.resource.display.MeleeDisplayInstance;
 import me.xjqsh.lrtactical.client.resource.display.ThrowableDisplayInstance;
+import me.xjqsh.lrtactical.client.resource.manager.ConsumableDisplayManager;
 import me.xjqsh.lrtactical.client.resource.manager.MeleeDisplayManager;
 import me.xjqsh.lrtactical.client.resource.manager.ThrowableDisplayManager;
 import me.xjqsh.lrtactical.init.ModItems;
@@ -36,13 +38,16 @@ public enum LrClientAssetsManager {
 
     private ThrowableDisplayManager throwableDisplay;
     private MeleeDisplayManager meleeDisplay;
+    private ConsumableDisplayManager consumableDisplay;
 
     public void reloadAndRegister(Consumer<PreparableReloadListener> register) {
         throwableDisplay = new ThrowableDisplayManager(GSON);
         meleeDisplay = new MeleeDisplayManager(GSON);
+        consumableDisplay = new ConsumableDisplayManager(GSON);
 
         register.accept(throwableDisplay);
         register.accept(meleeDisplay);
+        register.accept(consumableDisplay);
     }
 
     public ThrowableDisplayInstance getThrowableDisplay(ResourceLocation id) {
@@ -51,6 +56,10 @@ public enum LrClientAssetsManager {
 
     public MeleeDisplayInstance getMeleeDisplay(ResourceLocation id) {
         return meleeDisplay.getData(id);
+    }
+
+    public ConsumableDisplayInstance getConsumableDisplay(ResourceLocation id) {
+        return consumableDisplay.getData(id);
     }
 
     // 要排在tacz后，因为我们要用到tacz的资源

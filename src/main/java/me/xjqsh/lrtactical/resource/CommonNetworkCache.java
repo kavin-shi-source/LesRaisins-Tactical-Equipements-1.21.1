@@ -3,9 +3,11 @@ package me.xjqsh.lrtactical.resource;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import me.xjqsh.lrtactical.item.index.ConsumableIndex;
 import me.xjqsh.lrtactical.item.index.MeleeWeaponIndex;
 import me.xjqsh.lrtactical.item.index.ThrowableIndex;
 import me.xjqsh.lrtactical.network.DataType;
+import me.xjqsh.lrtactical.resource.manager.ConsumableIndexManager;
 import me.xjqsh.lrtactical.resource.manager.MeleeIndexManager;
 import me.xjqsh.lrtactical.resource.manager.ThrowableIndexManager;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +20,7 @@ public enum CommonNetworkCache implements ICommonResourceProvider {
 
     public Map<ResourceLocation, ThrowableIndex<?, ?>> throwableIndex = Maps.newHashMap();
     public Map<ResourceLocation, MeleeWeaponIndex<?>> meleeWeaponIndex = Maps.newHashMap();
+    public Map<ResourceLocation, ConsumableIndex> consumableIndex = Maps.newHashMap();
 
     @Override
     public ThrowableIndex<?, ?> getThrowableIndex(ResourceLocation id) {
@@ -37,6 +40,16 @@ public enum CommonNetworkCache implements ICommonResourceProvider {
     @Override
     public Collection<MeleeWeaponIndex<?>> getMeleeIndexes() {
         return meleeWeaponIndex.values();
+    }
+
+    @Override
+    public ConsumableIndex getConsumableIndex(ResourceLocation id) {
+        return consumableIndex.get(id);
+    }
+
+    @Override
+    public Collection<ConsumableIndex> getConsumableIndexes() {
+        return consumableIndex.values();
     }
 
     public void parseThrowableIndex(Map<ResourceLocation, String> cache) {
@@ -63,11 +76,24 @@ public enum CommonNetworkCache implements ICommonResourceProvider {
         this.meleeWeaponIndex = builder.build();
     }
 
+    public void parseConsumableIndex(Map<ResourceLocation, String> cache) {
+        ImmutableMap.Builder<ResourceLocation, ConsumableIndex> builder = ImmutableMap.builder();
+        for (Map.Entry<ResourceLocation, String> entry : cache.entrySet()) {
+            JsonObject jsonObject = CommonAssetsManager.GSON.fromJson(entry.getValue(), JsonObject.class);
+            var index = ConsumableIndexManager.parse(jsonObject, entry.getKey());
+            if (index != null) {
+                builder.put(entry.getKey(), index);
+            }
+        }
+        this.consumableIndex = builder.build();
+    }
+
     public void fromNetwork(Map<DataType, Map<ResourceLocation, String>> cache) {
         for (Map.Entry<DataType, Map<ResourceLocation, String>> entry : cache.entrySet()) {
             switch (entry.getKey()) {
                 case THROWABLE_INDEX -> parseThrowableIndex(entry.getValue());
                 case MELEE_INDEX -> parseMeleeIndex(entry.getValue());
+                case CONSUMABLE_INDEX -> parseConsumableIndex(entry.getValue());
                 default -> {
                     // ignore
                 }

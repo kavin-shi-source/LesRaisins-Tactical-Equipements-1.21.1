@@ -1,6 +1,7 @@
 package me.xjqsh.lrtactical.client;
 
 import me.xjqsh.lrtactical.EquipmentMod;
+import me.xjqsh.lrtactical.client.renderer.item.ConsumableItemRenderer;
 import me.xjqsh.lrtactical.client.renderer.item.FlashShieldItemRenderer;
 import me.xjqsh.lrtactical.client.renderer.item.MeleeItemRenderer;
 import me.xjqsh.lrtactical.client.renderer.item.ThrowableItemRendererWrapper;
@@ -60,5 +61,17 @@ public class ClientModEvents {
                 return HumanoidModel.ArmPose.CROSSBOW_HOLD;
             }
         }, ModItems.FLASH_SHIELD.get());
+
+        event.registerItem(new IClientItemExtensions() {
+            private ConsumableItemRenderer renderer = null;
+
+            @Override
+            public ConsumableItemRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    renderer = new ConsumableItemRenderer();
+                }
+                return renderer;
+            }
+        }, ModItems.CONSUMABLE.get());
     }
 }

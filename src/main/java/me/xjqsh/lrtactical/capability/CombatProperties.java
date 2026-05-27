@@ -18,7 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //todo 临时实现，太丑了，还得改
 public class CombatProperties {
@@ -33,9 +35,38 @@ public class CombatProperties {
     private int drawingTick = 0;
     private boolean preparingAttack = false;
     private int preparingWindowTick = 0;
+    private int preparingAttackCnt = 0;
+    private final Map<String, Integer> actionCounts = new HashMap<>();
 
     public CombatProperties(Player entity) {
         this.entity = entity;
+    }
+
+    public int getActionCount(MeleeAction action) {
+        return actionCounts.getOrDefault(action.getId(), 0);
+    }
+
+    public void setActionCount(MeleeAction action, int count) {
+        actionCounts.put(action.getId(), count);
+    }
+
+    public int getPreparingAttackCnt() {
+        return preparingAttackCnt;
+    }
+
+    public void setPreparingAttackCnt(int preparingAttackCnt) {
+        this.preparingAttackCnt = preparingAttackCnt;
+    }
+
+    public void resetMeleeSync() {
+        actionCounts.clear();
+        preparingAttack = false;
+        preparingWindowTick = 0;
+        preparingAttackCnt = 0;
+    }
+
+    public void forceResetMeleeSync() {
+        resetMeleeSync();
     }
 
     /**
@@ -75,6 +106,7 @@ public class CombatProperties {
 
         if (preparingWindowTick > 0) {
             preparingWindowTick--;
+            preparingAttackCnt++;
             if (preparingWindowTick <= 0) {
                 preparingAttack = false;
             }
@@ -107,8 +139,7 @@ public class CombatProperties {
         coolDownTick = newCoolDown;
         lastMaxTick = newCoolDown;
         drawingTick = newCoolDown;
-        preparingAttack = false;
-        preparingWindowTick = 0;
+        resetMeleeSync();
     }
 
     public boolean preAttack(MeleeAction action, Vec3 origin, Vec3 direction) {
@@ -125,6 +156,7 @@ public class CombatProperties {
                 // 服务端，准备进行攻击
                 this.preparingAttack = true;
                 this.preparingWindowTick = Math.max(5, weapon.getAttackDelay(entity, stack, action) + 10);
+                this.preparingAttackCnt = 0;
                 // 服务器宽限1tick以平衡延迟
                 this.coolDownTick = Math.max(0, coolDownTick - 1);
             } else {
@@ -132,7 +164,8 @@ public class CombatProperties {
                 PacketDistributor.sendToServer(new CPrepareMeleeAttack(action, origin, direction));
 
                 int delay = weapon.getAttackDelay(entity, stack, action);
-                var attack = new DelayAttack(delay, stack, action);
+                int count = actionCounts.merge(action.getId(), 1, Integer::sum);
+                var attack = new DelayAttack(delay, stack, action, count);
                 if (attack.getDelay() == 0) {
                     attack.perform(entity);
                 } else {
@@ -198,18 +231,21 @@ public class CombatProperties {
     public static class DelayAttack extends DelayTask {
         private final ItemStack stack;
         private final MeleeAction action;
+        private final int actionCount;
 
-        DelayAttack(int delay, ItemStack stack, MeleeAction action) {
+        DelayAttack(int delay, ItemStack stack, MeleeAction action, int actionCount) {
             super(delay);
             this.action = action;
             this.stack = stack;
+            this.actionCount = actionCount;
         }
 
         @Override
         public void perform(Player player) {
             if (stack.getItem() instanceof IMeleeWeapon weapon && weapon.isSame(stack, player.getMainHandItem())) {
                 List<Entity> entities = weapon.collectTargets(player, stack, action, player.getEyePosition(), player.getLookAngle());
-                PacketDistributor.sendToServer(new CMeleeAttackRequest(action, entities));
+                PacketDistributor.sendToServer(new CMeleeAttackRequest(action, actionCount,
+                        entities.stream().map(Entity::getId).toList()));
             }
         }
     }

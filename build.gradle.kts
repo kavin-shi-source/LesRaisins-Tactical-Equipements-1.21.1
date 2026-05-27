@@ -105,6 +105,11 @@ neoForge {
         create(mod_id) { 
             sourceSet(sourceSets["main"]) 
         } 
+    }
+
+    unitTest {
+        enable()
+        testedMod = mods.named(mod_id).get()
     } 
 } 
  
@@ -126,6 +131,10 @@ dependencies {
     compileOnly(libs.jei.common.api) 
     compileOnly(libs.jei.neoforge.api) 
     runtimeOnly(libs.jei.neoforge) 
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2") 
+    testImplementation("org.mockito:mockito-core:5.5.0") 
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0") 
 
 } 
  
@@ -157,4 +166,8 @@ tasks.withType<ProcessResources>().configureEach {
     filesMatching("**/neoforge.mods.toml") {
         expand(replaceProperties)
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

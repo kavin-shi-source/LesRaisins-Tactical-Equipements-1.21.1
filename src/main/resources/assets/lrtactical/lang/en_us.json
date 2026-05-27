@@ -46,7 +46,7 @@
   "key.lrtactical.sp_attack.desc": "Special Attack/Action",
 
   "pack.lrtactical.default_pack.name": "LesRaisins Tactical",
-  "pack.lrtactical.default_pack.desc": "Default Pack for LesRaisins Tactical",
+  "pack.lrtactical.default_pack.desc": "Green Grapes Tactical Equipment Default Pack (Hamburger Farm Modified - Ported from 0.4.1 to NeoForge 1.21.1)",
 
   "subtitle.lrtactical.entity.grenade.bounce": "Grenade Bounce",
   "subtitle.lrtactical.entity.grenade.flash.explode": "Flashbang Explosion",
@@ -55,5 +55,15 @@
   "subtitle.lrtactical.entity.grenade.smoke.start": "Smoke Grenade Opening",
   "subtitle.lrtactical.entity.grenade.smoke.loop": "Smoke Grenade Release",
   "subtitle.lrtactical.entity.grenade.smoke.end": "Smoke Grenade Dissipation",
-  "subtitle.lrtactical.player.ring": "*Deafened Ringing*"
+  "subtitle.lrtactical.player.ring": "*Deafened Ringing*",
+  "item_group.lrtactical.consumable": "Consumables",
+  "item.lrtactical.blood_pack": "Blood Pack",
+  "item.lrtactical.condensed_milk": "Condensed Milk",
+  "item.lrtactical.ibuprofen": "Ibuprofen",
+  "tooltip.lrtactical.blood_pack": "§6Use [RMB] to heal",
+  "tooltip.lrtactical.condensed_milk": "§6Use [RMB] to get effects",
+  "tooltip.lrtactical.ibuprofen": "§6Use [RMB] to remove negative effects",
+  "tooltip.lrtactical.consumable.heal": "§6Heal %s HP",
+  "tooltip.lrtactical.consumable.food": "§6Restore %s hunger / %s saturation",
+  "subtitle.lrtactical.consumable.use": "Consumable Used"
 }

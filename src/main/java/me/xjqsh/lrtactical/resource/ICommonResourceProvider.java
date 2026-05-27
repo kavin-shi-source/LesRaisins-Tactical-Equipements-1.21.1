@@ -1,5 +1,6 @@
 package me.xjqsh.lrtactical.resource;
 
+import me.xjqsh.lrtactical.item.index.ConsumableIndex;
 import me.xjqsh.lrtactical.item.index.MeleeWeaponIndex;
 import me.xjqsh.lrtactical.item.index.ThrowableIndex;
 import net.minecraft.resources.ResourceLocation;
@@ -14,4 +15,8 @@ public interface ICommonResourceProvider {
     MeleeWeaponIndex<?> getMeleeIndex(ResourceLocation id);
 
     Collection<MeleeWeaponIndex<?>> getMeleeIndexes();
+
+    ConsumableIndex getConsumableIndex(ResourceLocation id);
+
+    Collection<ConsumableIndex> getConsumableIndexes();
 }

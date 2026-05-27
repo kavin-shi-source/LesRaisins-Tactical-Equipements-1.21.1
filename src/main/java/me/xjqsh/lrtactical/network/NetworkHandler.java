@@ -24,6 +24,7 @@ public class NetworkHandler {
         // Client -> Server
         registrar.playToServer(CMeleeAttackRequest.TYPE, CMeleeAttackRequest.STREAM_CODEC, CMeleeAttackRequest::handle);
         registrar.playToServer(CPrepareMeleeAttack.TYPE, CPrepareMeleeAttack.STREAM_CODEC, CPrepareMeleeAttack::handle);
+        registrar.playToServer(CCancelToggleConsumableUse.TYPE, CCancelToggleConsumableUse.STREAM_CODEC, CCancelToggleConsumableUse::handle);
 
         // Server -> Client
         registrar.playToClient(SPackSyncMessage.TYPE, SPackSyncMessage.STREAM_CODEC, SPackSyncMessage::handle);

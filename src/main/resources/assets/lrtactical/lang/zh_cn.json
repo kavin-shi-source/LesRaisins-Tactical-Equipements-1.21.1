@@ -46,7 +46,7 @@
   "key.lrtactical.sp_attack.desc": "重击/特殊动作",
 
   "pack.lrtactical.default_pack.name": "LesRaisins 战术装备",
-  "pack.lrtactical.default_pack.desc": "绿葡萄战术装备默认包",
+  "pack.lrtactical.default_pack.desc": "绿葡萄战术装备默认包（汉堡农场修改版 - 基于原版 0.4.1 移植至 NeoForge 1.21.1）",
 
   "subtitle.lrtactical.entity.grenade.bounce": "手雷弹跳",
   "subtitle.lrtactical.entity.grenade.flash.explode": "闪光弹爆炸",
@@ -55,5 +55,15 @@
   "subtitle.lrtactical.entity.grenade.smoke.start": "烟雾弹开启",
   "subtitle.lrtactical.entity.grenade.smoke.loop": "烟雾弹释放",
   "subtitle.lrtactical.entity.grenade.smoke.end": "烟雾弹消散",
-  "subtitle.lrtactical.player.ring": "*耳鸣*"
+  "subtitle.lrtactical.player.ring": "*耳鸣*",
+  "item_group.lrtactical.consumable": "消耗品",
+  "item.lrtactical.blood_pack": "止血包",
+  "item.lrtactical.condensed_milk": "炼乳",
+  "item.lrtactical.ibuprofen": "布洛芬",
+  "tooltip.lrtactical.blood_pack": "§6右键使用以恢复生命值",
+  "tooltip.lrtactical.condensed_milk": "§6右键使用以获得效果",
+  "tooltip.lrtactical.ibuprofen": "§6右键使用以消除负面效果",
+  "tooltip.lrtactical.consumable.heal": "§6恢复 %s 生命值",
+  "tooltip.lrtactical.consumable.food": "§6恢复 %s 饥饿值 / %s 饱和度",
+  "subtitle.lrtactical.consumable.use": "使用消耗品"
 }
