@@ -4,16 +4,36 @@ import me.xjqsh.lrtactical.api.item.IMeleeWeapon;
 import me.xjqsh.lrtactical.api.item.IThrowable;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class LrJeiSubtype {
 
+    private record SubtypeId(ResourceLocation id) {}
+
     private static final ISubtypeInterpreter<ItemStack> MELEE_SUBTYPE = new ISubtypeInterpreter<>() {
         @Override
-        public String apply(ItemStack itemStack, UidContext context) {
+        @Nullable
+        public Object getSubtypeData(ItemStack itemStack, UidContext context) {
             IMeleeWeapon melee = IMeleeWeapon.of(itemStack);
             if (melee != null) {
-                return melee.getId(itemStack).toString();
+                ResourceLocation id = melee.getId(itemStack);
+                if (id != null) {
+                    return new SubtypeId(id);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String getLegacyStringSubtypeInfo(ItemStack itemStack, UidContext context) {
+            IMeleeWeapon melee = IMeleeWeapon.of(itemStack);
+            if (melee != null) {
+                ResourceLocation id = melee.getId(itemStack);
+                if (id != null) {
+                    return id.toString();
+                }
             }
             return "";
         }
@@ -21,10 +41,26 @@ public class LrJeiSubtype {
 
     private static final ISubtypeInterpreter<ItemStack> THROWABLE_SUBTYPE = new ISubtypeInterpreter<>() {
         @Override
-        public String apply(ItemStack itemStack, UidContext context) {
+        @Nullable
+        public Object getSubtypeData(ItemStack itemStack, UidContext context) {
             IThrowable throwable = IThrowable.of(itemStack);
             if (throwable != null) {
-                return throwable.getId(itemStack).toString();
+                ResourceLocation id = throwable.getId(itemStack);
+                if (id != null) {
+                    return new SubtypeId(id);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String getLegacyStringSubtypeInfo(ItemStack itemStack, UidContext context) {
+            IThrowable throwable = IThrowable.of(itemStack);
+            if (throwable != null) {
+                ResourceLocation id = throwable.getId(itemStack);
+                if (id != null) {
+                    return id.toString();
+                }
             }
             return "";
         }

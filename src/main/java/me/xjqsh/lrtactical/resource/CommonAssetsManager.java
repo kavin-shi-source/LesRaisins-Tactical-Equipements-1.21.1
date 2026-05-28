@@ -5,6 +5,7 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import me.xjqsh.lrtactical.EquipmentMod;
 import me.xjqsh.lrtactical.api.collision.ITargetFilter;
+import me.xjqsh.lrtactical.item.consumable.ConsumableData;
 import me.xjqsh.lrtactical.item.index.ConsumableIndex;
 import me.xjqsh.lrtactical.item.index.MeleeWeaponIndex;
 import me.xjqsh.lrtactical.item.index.ThrowableIndex;
@@ -42,6 +43,7 @@ public class CommonAssetsManager implements ICommonResourceProvider {
             .registerTypeAdapter(AttributeData.class, new AttributeData.Deserializer())
             .registerTypeAdapter(ParticleOptions.class, new ParticleOptionsDeserializer())
             .registerTypeAdapter(EffectCloudThrowableData.EffectData.class, new EffectCloudThrowableData.EffectDataDeSerializer())
+            .registerTypeAdapter(ConsumableData.RemoveEffectSelector.class, new ConsumableData.RemoveEffectSelector.Deserializer())
             .create();
 
     public static CommonAssetsManager INSTANCE;
